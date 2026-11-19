@@ -238,17 +238,31 @@
     });
   })();
 
+  /* campaign attribution: first touch in this visit, sent with every form */
+  var ATTR = {};
+  try {
+    var q = new URLSearchParams(location.search), keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid','fbclid','li_fat_id','msclkid'];
+    ATTR = JSON.parse(sessionStorage.getItem('thar-attr') || 'null') || {};
+    if (keys.some(function (k) { return q.get(k); }) || !ATTR.landing_page) {
+      if (keys.some(function (k) { return q.get(k); })) ATTR = {};
+      keys.forEach(function (k) { if (q.get(k)) ATTR[k] = q.get(k).slice(0, 200); });
+      ATTR.landing_page = ATTR.landing_page || location.pathname;
+      ATTR.referrer = ATTR.referrer || (document.referrer || '').slice(0, 200);
+      sessionStorage.setItem('thar-attr', JSON.stringify(ATTR));
+    }
+  } catch (e) {}
+
   /* forms */
   document.querySelectorAll('form[data-send]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (f.querySelector('.hp input') && f.querySelector('.hp input').value) return;
+      if (f.querySelector('.hp input') && f.querySelector('.hp input').value) return; if (!f.checkValidity()) { f.reportValidity(); alertBox(f, 'Please fill in your name, a valid work email and the other required fields.'); return; } var e0 = f.querySelector('.err'); if (e0) e0.remove();
       var data = {}; new FormData(f).forEach(function (v, k) { data[k] = v; });
-      data._subject = 'Thar website: ' + (f.dataset.send || 'Enquiry');
+      Object.keys(ATTR).forEach(function (k) { if (ATTR[k]) data[k] = ATTR[k]; }); data.page = location.pathname; data._subject = 'Thar website: ' + (f.dataset.send || 'Enquiry') + (ATTR.utm_campaign ? ' (' + ATTR.utm_campaign + ')' : ''); data._template = 'table';
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending...';
       fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error(); return r.json().catch(function () { return {}; }); })
-        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { window.__formMsg = j.message || ''; throw new Error(); } track('generate_lead', { form_name: f.dataset.send || 'Enquiry' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
+        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { window.__formMsg = j.message || ''; throw new Error(); } track('generate_lead', { form_name: f.dataset.send || 'Enquiry', campaign: ATTR.utm_campaign || '', source: ATTR.utm_source || '' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
         .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please try again in a moment.'); });
     });
   });
