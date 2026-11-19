@@ -432,6 +432,10 @@ svg.iso text{user-select:none}
 .rep-pts li{display:flex;gap:12px;align-items:center;font-weight:500}
 .rep-feat .vis{min-height:520px}
 @media (max-width:820px){.rep-prev{grid-template-columns:1fr 1fr}.rep-cover img{max-height:340px}}
+.rep-ph{display:flex;align-items:center;justify-content:center;background:var(--panel)}
+.rep-ph picture{display:contents}
+.rep-ph img{position:static!important;width:auto!important;height:84%!important;object-fit:contain!important;border-radius:4px;box-shadow:0 0 0 1px rgba(20,20,20,.08),0 14px 30px -12px rgba(240,74,18,.45)}
+.feat>svg{margin-bottom:6px}
 @media (prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
   *{animation-duration:.001s!important;transition-duration:.001s!important}
