@@ -4,7 +4,7 @@ Static site. Every page is plain HTML in its own folder, with shared styles in `
 
 ## Hosting
 
-Works on GitHub Pages, Netlify, Vercel or any static host. On GitHub Pages: Settings > Pages > Deploy from branch `main`, folder `/`. The `CNAME` file points the site at thar.co.
+Works on GitHub Pages, Netlify, Vercel or any static host. On GitHub Pages: Settings > Pages > Deploy from branch `main`, folder `/`. The `CNAME` file points the site at wearethar.com.
 
 ## Forms
 
