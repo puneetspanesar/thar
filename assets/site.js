@@ -374,4 +374,27 @@
     var cs = b.closest('.cs'), open = !cs.classList.contains('deep');
     cs.classList.toggle('deep', open); b.setAttribute('aria-expanded', open ? 'true' : 'false');
   }); });
+
+  /* landing page: practice explorer */
+  var lpxNav = document.querySelectorAll('.lpx-nav button');
+  if (lpxNav.length) {
+    var mobile = function () { return window.matchMedia('(max-width: 820px)').matches; };
+    var setOn = function (p) { lpxNav.forEach(function (x) { var on = x.dataset.p === p; x.classList.toggle('on', on); x.setAttribute('aria-selected', on ? 'true' : 'false'); }); };
+    lpxNav.forEach(function (b) { b.addEventListener('click', function () {
+      var p = b.dataset.p, s = document.querySelector('.lpx[data-p="' + p + '"]');
+      setOn(p);
+      if (mobile()) { document.querySelectorAll('.lpx').forEach(function (x) { x.classList.toggle('on', x === s); }); s.querySelectorAll('.rv').forEach(function (r) { r.classList.add('in'); }); b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }); var nv = document.querySelector('.lpx-navsec'); if (nv.getBoundingClientRect().top < 70) window.scrollTo({ top: nv.getBoundingClientRect().top + scrollY - 64, behavior: 'smooth' }); }
+      else s.scrollIntoView({ behavior: 'smooth' });
+      track('lp_practice', { practice: b.textContent.trim() });
+    }); });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (mobile()) return; es.forEach(function (e) { if (e.isIntersecting) setOn(e.target.dataset.p); }); }, { rootMargin: '-45% 0px -50% 0px' });
+      document.querySelectorAll('.lpx').forEach(function (s) { io.observe(s); });
+    }
+  }
+  document.querySelectorAll('[data-pick]').forEach(function (b) { b.addEventListener('click', function () {
+    var sel = document.getElementById('lin'); if (sel) sel.value = b.dataset.pick;
+    var f = document.getElementById('lead'); if (f) { f.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(function () { var i = document.getElementById('lfn'); if (i) i.focus({ preventScroll: true }); }, 600); }
+    track('lp_pick', { practice: b.dataset.pick });
+  }); });
 })();
