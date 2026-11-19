@@ -262,7 +262,9 @@
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending...';
       fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error(); return r.json().catch(function () { return {}; }); })
-        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { window.__formMsg = j.message || ''; throw new Error(); } track('generate_lead', { form_name: f.dataset.send || 'Enquiry', campaign: ATTR.utm_campaign || '', source: ATTR.utm_source || '' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
+        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { window.__formMsg = j.message || ''; throw new Error(); } track('generate_lead', { form_name: f.dataset.send || 'Enquiry', campaign: ATTR.utm_campaign || '', source: ATTR.utm_source || '' });
+          if (f.dataset.download) { f.innerHTML = '<p class="done">Thank you. Your report is ready.</p><p style="margin-top:18px"><a class="btn or dl" href="' + f.dataset.download + '" download="Thar Labs Faster to Market.pdf">Download the PDF</a></p>'; var a = f.querySelector('a.dl'); a.addEventListener('click', function () { track('file_download', { file_name: 'faster-to-market' }); }); a.click(); }
+          else f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
         .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please try again in a moment.'); });
     });
   });

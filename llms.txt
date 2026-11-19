@@ -37,4 +37,5 @@ Contact: https://wearethar.com/contact/. Address: WeWork Vaswani Chambers, 1st F
 - [How we work](https://wearethar.com/how-we-work/)
 - [Our work](https://wearethar.com/work/)
 - [Thar Labs research](https://wearethar.com/thar-labs/)
+- [Faster to market, Thar Labs report, November 2026](https://wearethar.com/thar-labs/faster-to-market/): how B2B firms can use AI to speed up go-to-market and ad campaigns
 - [Contact](https://wearethar.com/contact/)
