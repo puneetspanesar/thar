@@ -1,0 +1,40 @@
+# Thar
+
+> Thar is an AI-native marketing and technology studio based in Mumbai, India, working with clients across India, the UK and Europe. It brings brand, growth, platforms and AI together as one system, with strategists setting the direction, AI agents carrying the volume and people signing off all work. Thar has thirteen years of brand, growth and platform work behind it.
+
+Contact: hello@wearethar.com. Address: WeWork Vaswani Chambers, 1st Floor, 264-265 Dr Annie Besant Road, Worli, Mumbai 400030, India.
+
+## Services
+- [Growth](https://wearethar.com/services/growth/): Search, paid media, outbound and automation, wired to revenue. Covers seo and ai search visibility, paid media, outbound and account-based marketing, crm and marketing automation, analytics and attribution, conversion rate optimisation.
+- [Brand and Content](https://wearethar.com/services/brand-and-content/): Identity, campaigns and content engines that never miss a beat. Covers brand strategy and identity, campaigns and launches, linkedin and social content, video and motion, reports and publications, leadership branding.
+- [AI and Automation](https://wearethar.com/services/ai-and-automation/): Agents and workflows that take the repetitive work off your team. Covers agent workflows, ai readiness audit, content engines, sales automation, ai search visibility, team assistants.
+- [Platforms](https://wearethar.com/services/platforms/): Websites, tools and dashboards built to rank and convert. Covers corporate websites, landing pages and microsites, calculators and interactive tools, dashboards and data products, publishing platforms, hosting, care and maintenance.
+- [Experiences](https://wearethar.com/services/experiences/): Events, activations and print that bring the brand into the room. Covers events and activations, exhibitions, print and publications, office and campus branding, merchandise and gifting, festive campaigns.
+
+## Industries
+- [Healthtech and life sciences](https://wearethar.com/industries/healthtech/): Regulated claims, clinical audiences, long cycles.
+- [Financial services and fintech](https://wearethar.com/industries/financial-services/): Trust-first content and compliant performance.
+- [Technology and SaaS](https://wearethar.com/industries/technology-and-saas/): Account-based demand and product launches.
+- [Venture capital and startups](https://wearethar.com/industries/venture-and-startups/): LP narratives, portfolio and founder platforms.
+- [Real estate and workspaces](https://wearethar.com/industries/real-estate/): Leasing, tenant engagement and on-site moments.
+- [Consumer brands and D2C](https://wearethar.com/industries/consumer-and-d2c/): Launches, social commerce and repeat purchase.
+- [Media and publishing](https://wearethar.com/industries/media-and-publishing/): Audience growth and search-led distribution.
+- [Manufacturing and deep tech](https://wearethar.com/industries/manufacturing-and-deep-tech/): Explaining complex products to buyers and investors.
+
+## Free tools
+- [AI Readiness Score](https://wearethar.com/tools/ai-readiness-score/): Twelve questions on where AI can take work off your team.
+- [Ad Budget Planner](https://wearethar.com/tools/ad-budget-planner/): Split a monthly budget across Google, Meta and LinkedIn by goal.
+- [Content ROI Calculator](https://wearethar.com/tools/content-roi-calculator/): See what your content programme returns for what you spend.
+- [SEO Health Check](https://wearethar.com/tools/seo-health-check/): Get a free review of indexing, speed and AI search visibility.
+
+## Insights
+- [AI search and the end of ten blue links](https://wearethar.com/insights/ai-search-and-the-end-of-ten-blue-links/): AI answers now sit above the results for a large share of B2B questions. Here is what that does to your traffic, and what to do about it.
+- [Where agents belong in a marketing team](https://wearethar.com/insights/where-agents-belong-in-a-marketing-team/): A field report from a year of running AI agents on live marketing work: what they do well, where they fail and the rules we now follow.
+- [Why leaders should post before the company page](https://wearethar.com/insights/why-leaders-should-post-before-the-company-page/): People follow people. A simple plan to turn three leaders into your strongest channel on LinkedIn.
+
+## Company
+- [About Thar](https://wearethar.com/about/)
+- [How we work](https://wearethar.com/how-we-work/)
+- [Our work](https://wearethar.com/work/)
+- [Thar Labs research](https://wearethar.com/thar-labs/)
+- [Contact](https://wearethar.com/contact/)

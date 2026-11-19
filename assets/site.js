@@ -114,6 +114,31 @@
     requestAnimationFrame(function (n) { frame(n); var p = document.querySelector('.hero .poster'); if (p) p.style.opacity = 0; cv.style.opacity = 1; });
   }
 
+  /* analytics */
+  function track(name, params) { try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) {} }
+  var used = {};
+  function once(tool) { if (!used[tool]) { used[tool] = 1; track('tool_use', { tool_name: tool }); } }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (a) track('email_click', { link_url: a.getAttribute('href') });
+  });
+
+  /* consent: only asked where the law expects it (Europe and the UK) */
+  (function () {
+    var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+    var stored = null; try { stored = localStorage.getItem('thar-consent'); } catch (e) {}
+    if (stored || !/^(Europe\/|Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe))/.test(tz)) return;
+    var b = document.createElement('div'); b.className = 'consent'; b.setAttribute('role', 'region'); b.setAttribute('aria-label', 'Cookie choice');
+    b.innerHTML = '<p>We use Google Analytics cookies to see how this site is used. <a class="ul" href="/cookies/">Cookie Policy</a></p><div><button class="btn or" data-c="yes">Accept</button><button class="btn" data-c="no">Decline</button></div>';
+    document.body.appendChild(b);
+    b.addEventListener('click', function (e) {
+      var c = e.target.getAttribute && e.target.getAttribute('data-c'); if (!c) return;
+      try { localStorage.setItem('thar-consent', c); } catch (er) {}
+      if (c === 'yes' && window.gtag) window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      b.remove();
+    });
+  })();
+
   /* forms */
   document.querySelectorAll('form[data-send]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
@@ -123,7 +148,7 @@
       data._subject = 'Thar website: ' + (f.dataset.send || 'Enquiry');
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending...';
       fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
-        .then(function (r) { if (!r.ok) throw new Error(); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
+        .then(function (r) { if (!r.ok) throw new Error(); track('generate_lead', { form_name: f.dataset.send || 'Enquiry' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
         .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please email hello@wearethar.com instead.'); });
     });
   });
@@ -155,6 +180,7 @@
     out.innerHTML = '<p class="label or">Your score</p><p class="big" style="margin-top:12px">' + pct + ' / 100</p><div class="meter"><i></i></div><p class="h4">' + band[0] + '</p><p style="margin-top:12px;max-width:720px">' + band[1] + '</p>' +
       '<div class="rows"><div><span class="small">Data and tools</span><b>' + p('data') + '%</b></div><div><span class="small">Workflows</span><b>' + p('work') + '%</b></div><div><span class="small">People and governance</span><b>' + p('people') + '%</b></div></div>' +
       '<p style="margin-top:36px"><a class="go" href="/contact/">Talk to us about your results <span class="sq"><svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 L10.5 8 L6 12.5" fill="none" stroke="#fff" stroke-width="2"/></svg></span></a></p>';
+    track('tool_complete', { tool_name: 'AI Readiness Score', score: pct });
     requestAnimationFrame(function () { out.querySelector('.meter i').style.width = pct + '%'; });
     out.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   });
@@ -171,7 +197,7 @@
       var html = '<div class="rows" style="grid-template-columns:repeat(4,minmax(0,1fr))">' + s.map(function (v, i) { return '<div><span class="small">' + names[i] + ' (' + v + '%)</span><b>' + fmt(cur, amt * v / 100) + '</b></div>'; }).join('') + '</div>';
       document.getElementById('budget-out').innerHTML = html;
     };
-    bp.addEventListener('input', calc); calc();
+    bp.addEventListener('input', function () { calc(); once('Ad Budget Planner'); }); calc();
   }
 
   var roi = document.getElementById('roi');
@@ -185,6 +211,6 @@
       var mult = cost ? revenue / cost : 0;
       document.getElementById('roi-out').innerHTML = '<div class="rows"><div><span class="small">Visits in 12 months</span><b>' + Math.round(totalVisits).toLocaleString() + '</b></div><div><span class="small">Leads</span><b>' + Math.round(leads).toLocaleString() + '</b></div><div><span class="small">Customers</span><b>' + Math.round(customers).toLocaleString() + '</b></div><div><span class="small">Revenue</span><b>' + fmt(cur, revenue) + '</b></div><div><span class="small">Content spend</span><b>' + fmt(cur, cost) + '</b></div><div><span class="small">Return on spend</span><b>' + mult.toFixed(1) + 'x</b></div></div>';
     };
-    roi.addEventListener('input', rc); rc();
+    roi.addEventListener('input', function () { rc(); once('Content ROI Calculator'); }); rc();
   }
 })();
