@@ -2,7 +2,7 @@
 
 > Thar is an AI-native marketing and technology studio based in Mumbai, India, working with clients across India, the UK and Europe. It brings brand, growth, platforms and AI together as one system, with strategists setting the direction, AI agents carrying the volume and people signing off all work. Thar has thirteen years of brand, growth and platform work behind it.
 
-Contact: hello@wearethar.com. Address: WeWork Vaswani Chambers, 1st Floor, 264-265 Dr Annie Besant Road, Worli, Mumbai 400030, India.
+Contact: https://wearethar.com/contact/. Address: WeWork Vaswani Chambers, 1st Floor, 264-265 Dr Annie Besant Road, Worli, Mumbai 400030, India.
 
 ## Services
 - [Growth](https://wearethar.com/services/growth/): Search, paid media, outbound and automation, wired to revenue. Covers seo and ai search visibility, paid media, outbound and account-based marketing, crm and marketing automation, analytics and attribution, conversion rate optimisation.
