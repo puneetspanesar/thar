@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var FORM_ENDPOINT = 'https://formsubmit.co/ajax/hello@thar.co';
+  var FORM_ENDPOINT = 'https://formsubmit.co/ajax/hello@wearethar.com';
 
   /* dropdown menus */
   document.querySelectorAll('.has-dd').forEach(function (li) {
@@ -124,7 +124,7 @@
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending...';
       fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error(); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
-        .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please email hello@thar.co instead.'); });
+        .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please email hello@wearethar.com instead.'); });
     });
   });
   function alertBox(f, msg) { var p = f.querySelector('.err') || document.createElement('p'); p.className = 'err'; p.setAttribute('role', 'alert'); p.textContent = msg; f.appendChild(p); }

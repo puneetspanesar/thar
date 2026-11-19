@@ -8,4 +8,4 @@ Works on GitHub Pages, Netlify, Vercel or any static host. On GitHub Pages: Sett
 
 ## Forms
 
-Forms send to hello@thar.co through FormSubmit. The first submission triggers a one-time confirmation email to that address.
+Forms send to hello@wearethar.com through FormSubmit. The first submission triggers a one-time confirmation email to that address.
