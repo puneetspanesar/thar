@@ -489,22 +489,6 @@ svg.iso text{user-select:none}
   *{animation-duration:.001s!important;transition-duration:.001s!important}
 }
 
-/* client logos */
-.clients .mono{padding:22px var(--pad) 0;margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-.cl-track{overflow:hidden}
-.cl-track ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr)}
-.cl-track li{display:flex;align-items:center;justify-content:center;height:124px;padding:0 16px;border-right:1px solid var(--line)}
-.cl-track li:nth-child(7){border-right:0}
-.cl-track li[aria-hidden]{display:none}
-.cl-track img{width:auto;max-width:100%;object-fit:contain;opacity:.92}
-@media (max-width:1180px){
-  .cl-track ul{display:flex;width:max-content;animation:clscroll 34s linear infinite}
-  .cl-track li,.cl-track li[aria-hidden]{display:flex;height:96px;padding:0 34px;border-right:0}
-  .cl-track img{max-width:none}}
-@media (max-width:820px){.clients .mono{padding-top:28px}.cl-track li,.cl-track li[aria-hidden]{height:80px;padding:0 26px}.cl-track img{transform:scale(.85)}}
-@keyframes clscroll{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.cl-track ul{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.cl-track li[aria-hidden]{display:none}}
-
 /* ---------- mobile layer ---------- */
 .ptabs-sec,.cs-toggle,.mob,.mxm{display:none}
 @media (max-width:820px){
