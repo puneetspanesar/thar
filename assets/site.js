@@ -256,7 +256,7 @@
   document.querySelectorAll('.wk-tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
       var f = b.dataset.f;
-      document.querySelectorAll('.wk-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      document.querySelectorAll('.wk-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
       document.querySelectorAll('.cs').forEach(function (c) { c.hidden = !(f === 'all' || c.dataset.sector === f); });
       track('work_filter', { sector: f });
     });
