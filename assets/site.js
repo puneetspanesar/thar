@@ -247,7 +247,8 @@
       data._subject = 'Thar website: ' + (f.dataset.send || 'Enquiry');
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending...';
       fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
-        .then(function (r) { if (!r.ok) throw new Error(); track('generate_lead', { form_name: f.dataset.send || 'Enquiry' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
+        .then(function (r) { if (!r.ok) throw new Error(); return r.json().catch(function () { return {}; }); })
+        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { window.__formMsg = j.message || ''; throw new Error(); } track('generate_lead', { form_name: f.dataset.send || 'Enquiry' }); f.innerHTML = '<p class="done">Thank you. We will be in touch within one working day.</p>'; })
         .catch(function () { btn.disabled = false; btn.textContent = 'Send'; alertBox(f, 'Something went wrong. Please try again in a moment.'); });
     });
   });
