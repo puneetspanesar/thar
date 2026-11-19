@@ -169,9 +169,10 @@
   /* engine dashboard: tabs switch the series, line draws, hover shows values */
   var mock = document.querySelector('.mock');
   if (mock) {
-    var plot = mock.querySelector('svg.plot'), tip = mock.querySelector('.tipv'), data = JSON.parse(mock.dataset.series), cur = Object.keys(data)[0];
+    var plot = mock.querySelector('svg.plot'), tip = mock.querySelector('.tipv'), views = JSON.parse(mock.dataset.views), view = 'report', data = views.report.series, cur = Object.keys(data)[0];
+    var dfmt = function (v) { return (Math.round(v * 10) / 10).toLocaleString('en-IN'); };
     function render(key) {
-      cur = key; var s = data[key], max = Math.max.apply(null, s) * 1.1, min = Math.min.apply(null, s) * 0.8, w = 600, h = 180;
+      cur = key; var s = data[key], mx = Math.max.apply(null, s), mn = Math.min.apply(null, s), pad = (mx - mn) * 0.15 || 1, max = mx + pad, min = Math.max(0, mn - pad), w = 600, h = 180;
       plot.innerHTML = '';
       [0.25, 0.5, 0.75].forEach(function (f) { el('path', { d: 'M0 ' + h * f + ' H' + w, stroke: '#EFE8E2', 'stroke-dasharray': '3 5' }, plot); });
       var pts = s.map(function (v, i) { return [i * w / (s.length - 1), h - 10 - (v - min) / (max - min) * (h - 30)]; });
@@ -179,19 +180,41 @@
       el('path', { d: d + ' L ' + w + ' ' + h + ' L 0 ' + h + ' Z', fill: OR, opacity: 0.07 }, plot);
       var line = el('path', { d: d, fill: 'none', stroke: OR, 'stroke-width': 2.2 }, plot), L = line.getTotalLength();
       line.setAttribute('stroke-dasharray', L); line.setAttribute('stroke-dashoffset', L); line.getBoundingClientRect();
-      line.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(.3,.6,.2,1)'; line.setAttribute('stroke-dashoffset', 0);
+      line.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.3,.6,.2,1)'; line.setAttribute('stroke-dashoffset', 0);
       var dot = el('rect', { width: 8, height: 8, fill: OR, x: pts[pts.length - 1][0] - 8, y: pts[pts.length - 1][1] - 4 }, plot);
-      var vl = el('path', { d: '', stroke: '#101010', 'stroke-dasharray': '2 3', opacity: 0 }, plot);
+      var vl = el('path', { d: '', stroke: '#101010', 'stroke-dasharray': '2 3', opacity: 0, 'vector-effect': 'non-scaling-stroke' }, plot);
+      var last = function () { return 'Week ' + s.length + ': ' + dfmt(s[s.length - 1]); };
       plot.onpointermove = function (e) {
         var r = plot.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * w, i = Math.round(x / (w / (s.length - 1))); i = Math.max(0, Math.min(s.length - 1, i));
         vl.setAttribute('d', 'M' + pts[i][0] + ' 0 V' + h); vl.setAttribute('opacity', 1); dot.setAttribute('x', pts[i][0] - 4); dot.setAttribute('y', pts[i][1] - 4);
-        tip.textContent = 'Week ' + (i + 1) + ': ' + s[i].toLocaleString();
+        tip.textContent = 'Week ' + (i + 1) + ': ' + dfmt(s[i]);
       };
-      plot.onpointerleave = function () { vl.setAttribute('opacity', 0); tip.textContent = 'Week ' + s.length + ': ' + s[s.length - 1].toLocaleString(); };
-      tip.textContent = 'Week ' + s.length + ': ' + s[s.length - 1].toLocaleString();
+      plot.onpointerleave = function () { vl.setAttribute('opacity', 0); tip.textContent = last(); };
+      tip.textContent = last();
     }
-    mock.querySelectorAll('.tabs button').forEach(function (b) { b.addEventListener('click', function () { mock.querySelectorAll('.tabs button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); render(b.dataset.k); }); });
-    mock.querySelectorAll('aside a').forEach(function (a) { a.addEventListener('click', function () { mock.querySelectorAll('aside a').forEach(function (x) { x.classList.remove('on'); }); a.classList.add('on'); }); });
+    function bindTabs() {
+      mock.querySelectorAll('.tabs button').forEach(function (b) { b.addEventListener('click', function () { mock.querySelectorAll('.tabs button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); render(b.dataset.k); }); });
+    }
+    function esc(t) { return String(t).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+    function show(k) {
+      var v = views[k]; if (!v) return; view = k; data = v.series;
+      var body = mock.querySelector('.body');
+      body.classList.remove('swap'); void body.offsetWidth; body.classList.add('swap');
+      mock.querySelector('.title b').textContent = v.title;
+      mock.querySelector('.crumbs').innerHTML = v.crumbs.map(function (c) { return '<span>' + esc(c) + '</span>'; }).join('');
+      mock.querySelector('.bar .id').textContent = 'wk_12' + (k === 'report' ? '' : ' / ' + k);
+      mock.querySelector('.tabs').innerHTML = Object.keys(v.series).map(function (s, i) { return '<button type="button" data-k="' + esc(s) + '"' + (i ? '' : ' class="on"') + '>' + esc(s) + '</button>'; }).join('');
+      mock.querySelector('thead tr').innerHTML = v.head.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join('');
+      mock.querySelector('tbody').innerHTML = v.rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('');
+      bindTabs(); render(Object.keys(v.series)[0]);
+      track('dashboard_view', { view: k });
+    }
+    bindTabs();
+    mock.querySelectorAll('.dnav .a').forEach(function (a) { a.addEventListener('click', function () {
+      mock.querySelectorAll('.dnav .a').forEach(function (x) { x.classList.toggle('on', x === a); x.setAttribute('aria-pressed', x === a ? 'true' : 'false'); });
+      if (window.matchMedia('(max-width: 820px)').matches) a.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      show(a.dataset.v);
+    }); });
     var drawn = false; onView(mock, function (v) { if (v && !drawn) { drawn = true; render(cur); } });
   }
 
@@ -339,4 +362,16 @@
     };
     roi.addEventListener('input', function () { rc(); once('Content ROI Calculator'); }); rc();
   }
+
+  /* mobile: practice tabs on the homepage */
+  document.querySelectorAll('.ptabs button').forEach(function (b) { b.addEventListener('click', function () {
+    document.querySelectorAll('.ptabs button').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    document.querySelectorAll('.psec').forEach(function (s) { var on = s.querySelector('.practice').dataset.p === b.dataset.p; s.classList.toggle('on', on); if (on) s.querySelectorAll('.rv').forEach(function (r) { r.classList.add('in'); }); });
+    b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }); });
+  /* mobile: case study detail toggle */
+  document.querySelectorAll('.cs-toggle').forEach(function (b) { b.addEventListener('click', function () {
+    var cs = b.closest('.cs'), open = !cs.classList.contains('deep');
+    cs.classList.toggle('deep', open); b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }); });
 })();
