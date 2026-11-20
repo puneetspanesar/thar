@@ -398,3 +398,15 @@
     track('lp_pick', { practice: b.dataset.pick });
   }); });
 })();
+(function(){var w=document.getElementById('film');if(!w)return;var v=w.querySelector('video'),b=w.querySelector('.film-tg'),loaded=false,user=false;
+var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function load(){if(loaded)return;loaded=true;var a=document.createElement('source');a.src=v.dataset.srcWebm;a.type='video/webm';var c=document.createElement('source');c.src=v.dataset.srcMp4;c.type='video/mp4';v.appendChild(a);v.appendChild(c);v.load();}
+function play(){load();var p=v.play();if(p&&p.catch)p.catch(function(){});b.classList.remove('paused');b.setAttribute('aria-label','Pause film');}
+function pause(){v.pause();b.classList.add('paused');b.setAttribute('aria-label','Play film');}
+if(rm){b.classList.add('paused');b.setAttribute('aria-label','Play film');}
+b.addEventListener('click',function(){user=true;if(v.paused){play();if(window.gtag)gtag('event','film_play');}else pause();});
+var ready=false,inv=false;function go(){if(ready)return;ready=true;if(inv&&!rm)play();}
+if(document.readyState==='complete')setTimeout(go,1800);else window.addEventListener('load',function(){setTimeout(go,1800);});
+['scroll','pointerdown','keydown','touchstart'].forEach(function(n){window.addEventListener(n,function(){setTimeout(go,300);},{once:true,passive:true});});
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){inv=e.isIntersecting;if(!ready||rm||user&&v.paused&&loaded)return;if(e.isIntersecting)play();else if(loaded)v.pause();});},{rootMargin:'200px 0px'}).observe(w);}
+})();
