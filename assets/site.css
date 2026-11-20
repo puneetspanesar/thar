@@ -615,3 +615,14 @@ svg.iso text{user-select:none}
 .film-tg span{width:12px;height:14px;border-left:4px solid #101010;border-right:4px solid #101010}
 .film-tg.paused span{width:0;height:0;border-left:13px solid #101010;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:0;margin-left:4px}
 @media (max-width:820px){.film{border-radius:16px}.film-tg{right:10px;bottom:10px;width:36px;height:36px}}
+.indsplit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:56px;padding:0 var(--pad) 80px;align-items:start}
+.ilist a{display:grid;grid-template-columns:44px 1fr 28px;gap:16px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}
+.ilist a:last-child{border-bottom:1px solid var(--line)}
+.ilist .n{font-family:var(--mono);font-size:12.5px;color:var(--or-t)}
+.ilist .tx{display:flex;flex-direction:column;gap:4px}
+.ilist .t{font-family:var(--serif);font-variation-settings:'opsz' 72;font-size:clamp(21px,1.8vw,26px);letter-spacing:-.02em;line-height:1.15}
+.ilist .s{font-size:15px;line-height:1.45}
+.ilist .ar{justify-self:end;transition:transform .2s}
+.ilist a:hover .t,.ilist a:hover .ar{color:var(--or-t)}.ilist a:hover .ar{transform:translateX(4px)}
+.ifilm{position:sticky;top:104px}
+@media (max-width:820px){.indsplit{grid-template-columns:1fr;gap:28px;padding-bottom:48px}.ifilm{position:static;order:-1}.ilist a{grid-template-columns:30px 1fr 22px;gap:12px}}
